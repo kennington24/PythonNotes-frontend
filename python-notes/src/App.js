@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
 import './App.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <button type="button" onClick={this.onClick}>
+          Send GET /api/notes
+        </button>
       </div>
     );
+  }
+
+  onClick(ev) {
+    console.log('Sending a GET API Call !!!');
+    axios
+      .get('http://127.0.0.1:8000/api/notes/')
+      .then(res => {
+        console.log(res);
+      })
+      .then(response => {
+        console.log(JSON.stringify(response));
+      });
   }
 }
 
