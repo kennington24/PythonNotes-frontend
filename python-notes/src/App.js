@@ -1,73 +1,51 @@
 import React, { Component } from 'react';
+import { CardColumns, Card, CardHeader, CardBody, CardText } from 'reactstrap';
 import axios from 'axios';
-import './App.css';
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      data: []
-    };
-  }
+export default class Notes extends Component {
+  state = {
+    notes: [],
+    personalNotes: []
+  };
 
   componentDidMount() {
     axios
-      .get('http://127.0.0.1:8000/api/notes/')
-
-      .then(data => {
-        this.setState({ Data: data.results });
-      })
+      .get(`http://localhost:8000/api/personal_notes/`, {})
       .then(response => {
-        console.log(JSON.stringify(response));
-      });
+        this.setState({ personalNotes: response.data });
+      })
+      .catch(err => console.log(err));
+
+    axios
+      .get(`http://localhost:8000/api/notes/`, {})
+      .then(response => {
+        this.setState({ notes: response.data });
+      })
+      .catch(err => console.log(err));
   }
 
   render() {
     return (
-      <div className="App">
-        <h1 className="Header">Django Notes</h1>
-        {this.state.data.map((Data, i) => (
-          <div className="Data">
-            <div className="noteTitle">
-              <strong>Name</strong>: {Data.title}
-            </div>
-            <div className="noteContent">
-              <strong>Birth Year:</strong> {Data.content}
-            </div>
-          </div>
-        ))}
+      <div>
+        <h1>Notes</h1>
+        <div>
+          {this.state.notes.map(item => (
+            <p key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.content}</p>
+            </p>
+          ))}
+        </div>
+        <h1>Personal Notes</h1>
+        <div>
+          {this.state.personalNotes.map(item => (
+            <h2 key={item.title}>
+              <h3>{item.title}</h3>
+              <p>{item.content}</p>
+            </h2>
+          ))}
+        </div>
       </div>
     );
   }
-
-  // render() {
-  //   return (
-  //     <div>
-  //       <button type="button" onClick={this.onClick}>
-  //         Send GET /api/notes
-  //       </button>
-  //     </div>
-  //   );
-  // }
-
-  // onClick(ev) {
-  //   console.log('Getting your notes :)');
-  //   axios
-  //     .get('http://127.0.0.1:8000/api/notes/')
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .then(response => {
-  //       console.log(JSON.stringify(response));
-  //     });
-  // }
-
-  // componentDidMount() {
-  //   axios
-  //     .get(`http://127.0.0.1:8000/api/notes/`)
-  //     .then(res => this.setState({ posts: res.data }))
-  //     .catch(err => console.log(err));
-  // }
 }
-
-export default App;
