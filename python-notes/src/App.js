@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { CardColumns, Card, CardHeader, CardBody, CardText } from 'reactstrap';
 import axios from 'axios';
 
 export default class Notes extends Component {
@@ -10,14 +9,14 @@ export default class Notes extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:8000/api/personal_notes/`, {})
+      .get(`https://djorg-kenny.herokuapp.com/api/personal_notes/`, {})
       .then(response => {
         this.setState({ personalNotes: response.data });
       })
       .catch(err => console.log(err));
 
     axios
-      .get(`http://localhost:8000/api/notes/`, {})
+      .get(`https://djorg-kenny.herokuapp.com/api/notes/`, {})
       .then(response => {
         this.setState({ notes: response.data });
       })
